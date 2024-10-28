@@ -11,7 +11,7 @@ on:
 
 env:
   TERRAFORM_WORKING_DIRECTORY: "src/terraform"
-  APPLICATION_NAME: "aztf-gitaction"
+  APPLICATION_NAME: "aztf-githubaction"
   ENVIRONMENT_NAME: "dev"
 
 jobs:

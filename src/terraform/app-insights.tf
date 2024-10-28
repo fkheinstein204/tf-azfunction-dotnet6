@@ -1,5 +1,3 @@
-
-
 resource "azurerm_application_insights" "main" {
   name                = "${local.resource_name_prefix}-app-insights"
   location            = azurerm_resource_group.main.location
@@ -7,4 +5,3 @@ resource "azurerm_application_insights" "main" {
 
   application_type = "web"
 }
-

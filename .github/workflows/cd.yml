@@ -49,8 +49,6 @@ jobs:
             -backend-config="container_name=$BACKEND_STORAGE_CONTAINER_NAME" \
             -backend-config="key=$TF_BACKEND_KEY"
 
-          terraform apply -auto-approve
-
       - name: Terraform Plan
         id: plan
         working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}

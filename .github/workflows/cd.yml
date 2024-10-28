@@ -28,13 +28,13 @@ jobs:
 
       - name: Terraform Apply
         env:
-          ARM_SUBSCRIPTION_ID: ${{ tf_secret.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ tf_secret.ARM_TENANT_ID }}
-          ARM_CLIENT_ID: ${{ tf_secret.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ tf_secret.ARM_CLIENT_SECRET }}
-          BACKEND_RESOURCE_GROUP_NAME: ${{ tf_secret.BACKEND_RESOURCE_GROUP_NAME }}
-          BACKEND_STORAGE_ACCOUNT_NAME: ${{ tf_secret.BACKEND_STORAGE_ACCOUNT_NAME }}
-          BACKEND_STORAGE_CONTAINER_NAME: ${{ tf_secret.BACKEND_STORAGE_CONTAINER_NAME }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          BACKEND_RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
+          BACKEND_STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
+          BACKEND_STORAGE_CONTAINER_NAME: ${{ secrets.BACKEND_STORAGE_CONTAINER_NAME }}
           TF_VAR_application_name: ${{ env.APPLICATION_NAME }}
           TF_VAR_environment_name: ${{ env.ENVIRONMENT_NAME }}
           TF_BACKEND_KEY: ${{ env.APPLICATION_NAME }}-${{ env.ENVIRONMENT_NAME }}

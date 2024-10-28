@@ -29,16 +29,14 @@ jobs:
       - name: Login to Azure using Service Principal
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
+          creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
 
       - name: Azure CLI script
         uses: azure/cli@v2
         with:
           azcliversion: latest
           inlineScript: |
-            az group show --name "${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}"
-            # You can write your Azure CLI inline scripts here.
+            az account show
 
       - name: Terraform fmt
         id: fmt

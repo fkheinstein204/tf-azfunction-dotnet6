@@ -49,8 +49,8 @@ jobs:
 
       - name: Terraform plan
         id: plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out main.tfplan
 
       - name: Terraform apply
         id: apply
-        run: terraform apply tfplan
+        run: terraform apply main.tfplan

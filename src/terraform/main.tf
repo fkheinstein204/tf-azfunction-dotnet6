@@ -10,5 +10,9 @@ resource "random_string" "name" {
   upper   = false
 }
 
+resource "random_integer" "main" {
+  min = 001
+  max = 999
+}
 data "azurerm_client_config" "current" {
 }

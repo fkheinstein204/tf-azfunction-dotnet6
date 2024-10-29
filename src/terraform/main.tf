@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "main" {
 }
 
 resource "random_string" "name" {
-  length  = 8
+  length  = 6
   special = false
   upper   = false
 }

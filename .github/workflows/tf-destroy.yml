@@ -21,34 +21,25 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
     steps:
-     # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      # Install the latest version of Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.9.0
           terraform_wrapper: false
 
-      # Log into Azure with OIDC integration
-      - name: Azure login
-        uses: azure/login@v2
+     # Download saved plan from artifacts
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v2
         with:
-          client-id: ${{ secrets.ARM_CLIENT_ID }}
-          tenant-id: ${{ secrets.ARM_TENANT_ID }}
-          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          name: tfplan
+          path: .
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-
+      # Configure Terraform backend
       - name: Terraform init
         id: init
         env:
@@ -66,7 +57,8 @@ jobs:
             -backend-config="container_name=$BACKEND_STORAGE_CONTAINER_NAME" \
             -backend-config="key=$TF_BACKEND_KEY"
 
-      - name: Terraform Apply
-        id: apply
+
+      - name: Terraform Destroy
+        id: destroy
         working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
-        run: terraform apply -auto-approve
+        run: terraform destroy -auto-approve

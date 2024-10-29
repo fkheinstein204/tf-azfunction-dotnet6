@@ -2,11 +2,13 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.7.0"
+      version = "~> 4.7.0"
     }
   }
 
   backend "azurerm" {
+    use_oidc         = true
+    use_azuread_auth = true
   }
 }
 
@@ -17,4 +19,6 @@ provider "azurerm" {
       recover_soft_deleted_key_vaults = true
     }
   }
+
+  use_oidc = true
 }

@@ -5,13 +5,11 @@ terraform {
       version = "~> 4.7.0"
     }
   }
-
   backend "azurerm" {
     use_oidc         = true
     use_azuread_auth = true
   }
 }
-
 provider "azurerm" {
   features {
     key_vault {

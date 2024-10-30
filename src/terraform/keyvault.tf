@@ -1,5 +1,5 @@
 resource "azurerm_key_vault" "kvault" {
-  name                        = "${var.application_name}${var.environment}-kv${random_integer.main.result}"
+  name                        = "${var.application_name}-${var.environment}-kv${random_integer.main.result}"
   location                    = azurerm_resource_group.main.location
   resource_group_name         = azurerm_resource_group.main.name
   enabled_for_disk_encryption = true

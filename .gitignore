@@ -37,3 +37,8 @@ override.tf.json
 terraform.rc
 src/terraform/main.tfplan
 src/terraform/.terraform.lock.hcl
+
+**/.vs/**
+**/obj/**
+**/bin/**
+**/.DS_Store

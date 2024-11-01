@@ -1,4 +1,3 @@
-
 locals {
   owners               = var.business_divsion
   environment          = var.environment

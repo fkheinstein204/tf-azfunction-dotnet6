@@ -12,7 +12,7 @@ resource "random_string" "name" {
 }
 
 resource "random_integer" "main" {
-  min = 101
+  min = 111
   max = 999
 }
 data "azurerm_client_config" "current" {

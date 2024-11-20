@@ -2,10 +2,7 @@ name: ci
 
 on:
   pull_request:
-    branches:
-      - main
-    paths:
-        - 'src/dotnet/**'
+    branches: [ main ]
 
 env:
   DOTNET_VERSION: '6.0.401' # The .NET SDK version to use

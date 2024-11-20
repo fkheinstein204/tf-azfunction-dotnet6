@@ -1,4 +1,4 @@
-name: ci
+name: ci_Web_$(Date:yyyyMMdd)$(Rev:.r)
 
 on:
   push:

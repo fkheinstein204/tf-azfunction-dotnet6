@@ -1,4 +1,4 @@
-name: Terraform-Plan-Destroy
+name: '🧹 Housekeeping Terraform Destroy'
 
 on:
   workflow_dispatch:

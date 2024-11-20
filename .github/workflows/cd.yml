@@ -1,4 +1,4 @@
-name: cd_Web_$(Date:yyyyMMdd)$(Rev:.r)
+name: cd
 
 on:
   push:

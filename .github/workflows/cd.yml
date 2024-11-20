@@ -1,4 +1,4 @@
-name: cd
+name: '🚀 Continuous Delivery (CD)'
 
 on:
   push:

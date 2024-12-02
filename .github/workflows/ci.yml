@@ -33,3 +33,4 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal --filter Category=Unit
         working-directory: ${{ env.WORKING_DIRECTORY }}
+        

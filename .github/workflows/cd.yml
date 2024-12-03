@@ -12,7 +12,7 @@ env:
   TF_LOG: INFO
   TERRAFORM_WORKING_DIRECTORY: "src/Infra-Tf"
   DOTNET_WORKING_DIRECTORY: "src/dotnet/AzFnApplication"
-  APPLICATION_NAME: "aztf-githubaction"
+  APPLICATION_NAME: "aztf-funcApp"
   ENVIRONMENT_NAME: "dev"
   DOTNET_VERSION: '8.0.x' # The .NET SDK version to use
 

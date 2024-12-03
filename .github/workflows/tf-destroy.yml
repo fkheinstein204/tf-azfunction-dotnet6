@@ -6,7 +6,7 @@ on:
 env:
   TF_LOG: INFO
   TERRAFORM_WORKING_DIRECTORY: "src/terraform"
-  APPLICATION_NAME: "aztf-githubaction"
+  APPLICATION_NAME: "aztf-funcApp"
   ENVIRONMENT_NAME: "dev"
 
 #Special permissions required for OIDC authentication
@@ -41,9 +41,8 @@ jobs:
             tenant-id: ${{ secrets.ARM_TENANT_ID }}
             subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-
-      - name: Terraform destroy
-        id: destroy
+      - id: destroy
+        name: Terraform destroy
         env:
           BACKEND_RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
           BACKEND_STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}

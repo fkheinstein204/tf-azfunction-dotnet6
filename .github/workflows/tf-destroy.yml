@@ -5,8 +5,8 @@ on:
 
 env:
   TF_LOG: INFO
-  TERRAFORM_WORKING_DIRECTORY: "src/terraform"
-  APPLICATION_NAME: "aztf-githubaction"
+  TERRAFORM_WORKING_DIRECTORY:  "src/Infra-Tf"
+  APPLICATION_NAME: "aztf-funcApp"
   ENVIRONMENT_NAME: "dev"
 
 #Special permissions required for OIDC authentication

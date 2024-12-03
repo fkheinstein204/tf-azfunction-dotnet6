@@ -47,17 +47,16 @@ jobs:
         run: dotnet publish **/AzFnApplication.csproj --configuration Release --output ./publish --no-restore
         working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
 
-      - name : Generate Deployment Package
+      - name: Generate Deployment Package
         run: |
-          cd publish
-          zip -r deployment.zip .
-        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+          zip -r ../deployment.zip ./
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}/publish
 
       - name: Upload Deployment Package
         uses: actions/upload-artifact@v4
         with:
-          name: function-app
-          path: ${{ env.DOTNET_WORKING_DIRECTORY }}/publish/deployment.zip
+          name: function-deployment
+          path: ${{ env.DOTNET_WORKING_DIRECTORY }}/deployment.zip
 
 
   terraform:
@@ -90,12 +89,12 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
+      #- name: Azure CLI script
+      #  uses: azure/cli@v2
+      #  with:
+      #    azcliversion: latest
+      #    inlineScript: |
+      #      az account show
 
       - id: apply
         name: Terraform Apply
@@ -146,4 +145,4 @@ jobs:
       run: |
           az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID --output none
           az account set -s $ARM_SUBSCRIPTION_ID --output none
-          az functionapp deployment source config-zip -g $RESOURCE_GROUP_NAME -n $FUNCTION_NAME --src ./publish/deployment.zip
+          az functionapp deployment source config-zip -g $RESOURCE_GROUP_NAME -n $FUNCTION_NAME --src ./deployment.zip

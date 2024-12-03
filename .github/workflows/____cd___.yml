@@ -89,12 +89,12 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
+      #- name: Azure CLI script
+      #  uses: azure/cli@v2
+      #  with:
+      #    azcliversion: latest
+      #    inlineScript: |
+      #      az account show
 
       - id: apply
         name: Terraform Apply
@@ -130,27 +130,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Azure login
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.ARM_CLIENT_ID }}
-        tenant-id: ${{ secrets.ARM_TENANT_ID }}
-        subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-
     - uses: actions/download-artifact@v4
       with:
         name: function-deployment
-
-    - name: Azure CLI script
-      uses: azure/cli@v2
-      env:
-        RESOURCE_GROUP_NAME: ${{ needs.terraform.outputs.resource_group_name }}
-        FUNCTION_NAME: ${{ needs.terraform.outputs.function_name }}
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az account show
-          az functionapp deployment source config-zip -g $RESOURCE_GROUP_NAME -n $FUNCTION_NAME --src ./deployment.zip
 
     - name: Deploy
       env:
@@ -161,8 +143,6 @@ jobs:
         RESOURCE_GROUP_NAME: ${{ needs.terraform.outputs.resource_group_name }}
         FUNCTION_NAME: ${{ needs.terraform.outputs.function_name }}
       run: |
-          az account show
-          #az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID --output none
-          #az account set -s $ARM_SUBSCRIPTION_ID --output none
-          #az functionapp deployment source config-zip -g $RESOURCE_GROUP_NAME -n $FUNCTION_NAME --src ./deployment.zip
-
+          az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID --output none
+          az account set -s $ARM_SUBSCRIPTION_ID --output none
+          az functionapp deployment source config-zip -g $RESOURCE_GROUP_NAME -n $FUNCTION_NAME --src ./deployment.zip

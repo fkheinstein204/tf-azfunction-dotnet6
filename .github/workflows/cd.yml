@@ -172,7 +172,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az account show
+            #az account show
 
       - id: apply
         name: Terraform Apply
@@ -225,8 +225,8 @@ jobs:
         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-        RESOURCE_GROUP_NAME: ${{ needs.terraform.outputs.resource_group_name }}
-        FUNCTION_NAME: ${{ needs.terraform.outputs.function_name }}
+        RESOURCE_GROUP_NAME: ${{ needs.terraform-apply.outputs.resource_group_name }}
+        FUNCTION_NAME: ${{ needs.terraform-apply.outputs.function_name }}
       run: |
           az account show
           #az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID --output none

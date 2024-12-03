@@ -8,7 +8,7 @@ on:
       - 'src/dotnet/**'
 
 env:
-  DOTNET_VERSION: '8.0.11' #'6.0.401' # The .NET SDK version to use
+  DOTNET_VERSION: '8.0.x' #'6.0.401' # The .NET SDK version to use
   #WORKING_DIRECTORY: ./src/dotnet/AzFnApplication
   DOTNET_WORKING_DIRECTORY: "./src/dotnet/AzFnApplication"
 

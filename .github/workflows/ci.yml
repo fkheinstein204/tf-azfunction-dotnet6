@@ -9,7 +9,8 @@ on:
 
 env:
   DOTNET_VERSION: '6.0.401' # The .NET SDK version to use
-  WORKING_DIRECTORY: ./src/dotnet/AzFnApplication
+  #WORKING_DIRECTORY: ./src/dotnet/AzFnApplication
+  DOTNET_WORKING_DIRECTORY: "./src/dotnet/AzFnApplication"
 
 jobs:
   build:
@@ -24,13 +25,27 @@ jobs:
 
       - name: Install dependencies
         run: dotnet restore
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
 
       - name: Test
         run: dotnet test --no-restore --verbosity normal --filter Category=Unit
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+
+      - name: Publish
+        run: dotnet publish **/AzFnApplication.csproj --configuration Release --output ./publish --no-restore
+
+      - name : Generate Deployment Package
+        run: |
+          cd publish
+          zip -r deployment.zip .
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+
+      - name: Upload Deployment Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: function-app
+          path: ${{ env.DOTNET_WORKING_DIRECTORY }}/publish/deployment.zip

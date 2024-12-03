@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+    - main
     paths:
       - 'src/Infra-Tf/**'
       - 'src/dotnet/**'
@@ -17,6 +20,12 @@ env:
   APPLICATION_NAME: "aztf-funcApp"
   ENVIRONMENT_NAME: "dev"
   DOTNET_VERSION: '8.0.x' # The .NET SDK version to use
+
+  #These environment variables are used by the terraform azure provider to setup OIDD authenticate. 
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+
 
 permissions:
   id-token: write
@@ -60,15 +69,83 @@ jobs:
           path: ${{ env.DOTNET_WORKING_DIRECTORY }}/deployment.zip
 
 
-  terraform:
+
+
+  terraform-plan:
+    name: 'Terraform Plan'
     runs-on: ubuntu-latest
+    env:
+      #this is needed since we are running terraform with read-only permissions
+      ARM_SKIP_PROVIDER_REGISTRATION: true
+    outputs:
+      tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
+
+    steps:
+     # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install the latest version of Terraform CLI
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.0
+          terraform_wrapper: false
+
+      # Log into Azure with OIDC integration
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      # Will fail the build if not
+      - name: Terraform Format
+        run: terraform fmt -check
+
+
+      - id: tf-plan
+        name: Terraform Plan
+        env:
+          BACKEND_RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
+          BACKEND_STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
+          BACKEND_STORAGE_CONTAINER_NAME: ${{ secrets.BACKEND_STORAGE_CONTAINER_NAME }}
+          TF_VAR_application_name: ${{ env.APPLICATION_NAME }}
+          TF_VAR_environment_name: ${{ env.ENVIRONMENT_NAME }}
+          TF_BACKEND_KEY: ${{ env.APPLICATION_NAME }}-${{ env.ENVIRONMENT_NAME }}.tfstate
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: |
+
+         export exitcode=0
+          terraform init \
+            -backend-config="resource_group_name=$BACKEND_RESOURCE_GROUP_NAME" \
+            -backend-config="storage_account_name=$BACKEND_STORAGE_ACCOUNT_NAME" \
+            -backend-config="container_name=$BACKEND_STORAGE_CONTAINER_NAME" \
+            -backend-config="key=$TF_BACKEND_KEY"
+
+
+          terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+
+          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+          
+          if [ $exitcode -eq 1 ]; then
+            echo Terraform Plan Failed!
+            exit 1
+          else 
+            exit 0
+          fi
+
+  terraform-apply:
+    name: 'Terraform Apply'
+    if: github.ref == 'refs/heads/main' && needs.terraform-plan.outputs.tfplanExitCode == 2
+    runs-on: ubuntu-latest
+    needs: [terraform-plan]
     outputs:
       resource_group_name: ${{ steps.apply.outputs.resource_group_name }}
       function_name: ${{ steps.apply.outputs.function_name }}
-    env:
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+
 
     steps:
      # Checkout the repository to the GitHub Actions runner

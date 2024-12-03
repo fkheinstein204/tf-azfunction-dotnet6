@@ -43,3 +43,4 @@ src/terraform/.terraform.lock.hcl
 **/bin/**
 **/.DS_Store
 src/AzFnApplication/**
+**.vscode/**

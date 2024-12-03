@@ -21,8 +21,11 @@ resource "azurerm_linux_function_app" "fn_linux_app" {
   storage_account_access_key = azurerm_storage_account.functions.primary_access_key
   service_plan_id            = azurerm_service_plan.main.id
   site_config {
+    application_insights_key                = azurerm_application_insights.main.instrumentation_key
+    application_insights_connection_string  = azurerm_application_insights.main.connection_string
     application_stack {
-      dotnet_version = "6.0"
+      dotnet_version = "8.0"
+      use_dotnet_isolated_runtime = true
     }
     cors {
       allowed_origins     = ["https://portal.azure.com"]
@@ -30,9 +33,8 @@ resource "azurerm_linux_function_app" "fn_linux_app" {
     }
   }
   app_settings = {
-    WEBSITE_RUN_FROM_PACKAGE              = 1
-    APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.main.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.main.connection_string
+    "WEBSITE_RUN_FROM_PACKAGE" = 1
+    "SCM_DO_BUILD_DURING_DEPLOYMENT" = true
   }
 
   identity {

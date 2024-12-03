@@ -25,7 +25,6 @@ resource "azurerm_linux_function_app" "fn_linux_app" {
     application_insights_connection_string  = azurerm_application_insights.main.connection_string
     application_stack {
       dotnet_version = "8.0"
-      use_dotnet_isolated_runtime = true
     }
     cors {
       allowed_origins     = ["https://portal.azure.com"]

@@ -32,7 +32,8 @@ resource "azurerm_linux_function_app" "fn_linux_app" {
     }
   }
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = 1
+    "WEBSITE_RUN_FROM_PACKAGE" = 1,
+     FUNCTIONS_WORKER_RUNTIME  = "dotnet-isolated" 
     "SCM_DO_BUILD_DURING_DEPLOYMENT" = true
   }
 

@@ -1,7 +1,7 @@
 name: '🧹 Terraform Unit Tests'
 
 on:
-  workflow_dispatch:
+  #workflow_dispatch:
 
 permissions:
   security-events: write # Needed to upload-sarif

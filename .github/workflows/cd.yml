@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  TF_LOG: INFO
+  #TF_LOG: INFO
   TERRAFORM_WORKING_DIRECTORY: "src/Infra-Tf"
   DOTNET_WORKING_DIRECTORY: "src/dotnet/AzFnApplication"
   APPLICATION_NAME: "aztf-funcApp"

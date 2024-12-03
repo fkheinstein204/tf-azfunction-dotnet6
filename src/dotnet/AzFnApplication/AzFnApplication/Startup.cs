@@ -18,6 +18,7 @@ namespace AzFnApplication
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            builder.Services.AddLogging();
             builder.Services.AddSingleton<IBulkRequestProcessor, BulkRequestProcessor>();
         }
     }

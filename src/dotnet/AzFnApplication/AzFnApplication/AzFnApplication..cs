@@ -8,16 +8,34 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
+using AzFnApplication.Services.Interfaces;
+
+
 namespace AzFnApplication
 {
-    public static class Function1
+    public class AzFnApplication
     {
+
+        private readonly IBulkRequestProcessor _bulkRequestProcessor;
+
+        public AzFnApplication(IBulkRequestProcessor bulkRequestProcessor)
+        {
+            _bulkRequestProcessor = bulkRequestProcessor;
+        }
+
+
         [FunctionName("Function1")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
+
+
+            var myNumber = await _bulkRequestProcessor.DoSomethingAsync();
+            log.LogInformation($"Here's my number: {myNumber}");
+
+
 
             string name = req.Query["name"];
 

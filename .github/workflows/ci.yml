@@ -9,14 +9,14 @@ on:
 
 env:
   DOTNET_VERSION: '8.0.x' #'6.0.401' # The .NET SDK version to use
-  #WORKING_DIRECTORY: ./src/dotnet/AzFnApplication
-  DOTNET_WORKING_DIRECTORY: "./src/dotnet/AzFnApplication"
+  WORKING_DIRECTORY: "./src/dotnet/AzFnApplication"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
@@ -24,28 +24,12 @@ jobs:
 
       - name: Install dependencies
         run: dotnet restore
-        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+        working-directory: ${{ env.WORKING_DIRECTORY }}
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
-        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+        working-directory: ${{ env.WORKING_DIRECTORY }}
 
       - name: Test
         run: dotnet test --no-restore --verbosity normal --filter Category=Unit
-        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
-
-      - name: Publish
-        run: dotnet publish **/AzFnApplication.csproj --configuration Release --output ./publish --no-restore
-        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
-
-      - name : Generate Deployment Package
-        run: |
-          cd publish
-          zip -r deployment.zip .
-        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
-
-      - name: Upload Deployment Package
-        uses: actions/upload-artifact@v4
-        with:
-          name: function-app
-          path: ${{ env.DOTNET_WORKING_DIRECTORY }}/publish/deployment.zip
+        working-directory: ${{ env.WORKING_DIRECTORY }}

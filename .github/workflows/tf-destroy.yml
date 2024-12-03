@@ -9,6 +9,7 @@ env:
   APPLICATION_NAME: "aztf-githubaction"
   ENVIRONMENT_NAME: "dev"
 
+#Special permissions required for OIDC authentication
 permissions:
   id-token: write
   contents: read
@@ -23,16 +24,16 @@ jobs:
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-            # Install the latest version of Terraform CLI
+      # Install the latest version of the Terraform CLI
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
             terraform_version: 1.9.0
             terraform_wrapper: false
 
-            # Log into Azure with OIDC integration
+      # Log into Azure with OIDC integration
       - name: Azure login
         uses: azure/login@v2
         with:

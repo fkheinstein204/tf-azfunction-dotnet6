@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'src/Infra-Tf/**'
-      - 'src/dotnet/**'
       - '.github/workflows/**'
 
 env:
@@ -15,11 +14,50 @@ env:
   DOTNET_WORKING_DIRECTORY: "src/dotnet/AzFnApplication"
   APPLICATION_NAME: "aztf-githubaction"
   ENVIRONMENT_NAME: "dev"
+  DOTNET_VERSION: '8.0.x' # The .NET SDK version to use
 
 permissions:
   id-token: write
   contents: read
+
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal --filter Category=Unit
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+
+      - name: Publish
+        run: dotnet publish **/AzFnApplication.csproj --configuration Release --output ./publish --no-restore
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+
+      - name : Generate Deployment Package
+        run: |
+          cd publish
+          zip -r deployment.zip .
+        working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
+
+      - name: Upload Deployment Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: function-app
+          path: ${{ env.DOTNET_WORKING_DIRECTORY }}/publish/deployment.zip
+
   terraform:
     runs-on: ubuntu-latest
     env:
@@ -54,8 +92,8 @@ jobs:
           inlineScript: |
             az account show
 
-      - name: Terraform init
-        id: init
+      - id: apply
+        name: Terraform Apply
         env:
           BACKEND_RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
           BACKEND_STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
@@ -71,7 +109,17 @@ jobs:
             -backend-config="container_name=$BACKEND_STORAGE_CONTAINER_NAME" \
             -backend-config="key=$TF_BACKEND_KEY"
 
-      - name: Terraform Apply
-        id: apply
-        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
-        run: terraform apply -auto-approve
+          terraform apply -auto-approve
+
+          resource_group_name=$(terraform output -raw resource_group_name)
+          echo $resource_group_name
+          echo "resource_group_name=$resource_group_name" >> "$GITHUB_OUTPUT"
+
+          function_name=$(terraform output -raw function_name)
+          echo $function_name
+          echo "function_name=$function_name" >> "$GITHUB_OUTPUT"
+
+      #- id: apply
+      #  name: Terraform Apply
+      #  working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+      #  run:  terraform apply -auto-approve

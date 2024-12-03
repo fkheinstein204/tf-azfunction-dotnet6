@@ -8,17 +8,17 @@ on:
       - 'src/dotnet/**'
 
 env:
-  DOTNET_VERSION: '6.0.401' # The .NET SDK version to use
-  WORKING_DIRECTORY: ./src/dotnet/AzFnApplication
+  DOTNET_VERSION: '8.0.x' #'6.0.401' # The .NET SDK version to use
+  WORKING_DIRECTORY: "./src/dotnet/AzFnApplication"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -33,4 +33,3 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal --filter Category=Unit
         working-directory: ${{ env.WORKING_DIRECTORY }}
-        

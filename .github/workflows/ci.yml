@@ -6,6 +6,7 @@ on:
     branches: [ main ]
     paths:
       - 'src/dotnet/**'
+  workflow_dispatch:
 
 env:
   DOTNET_VERSION: '8.0.x' #'6.0.401' # The .NET SDK version to use

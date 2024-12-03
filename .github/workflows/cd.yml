@@ -203,7 +203,7 @@ jobs:
 
 
   deploy:
-    needs: [terraform, build]
+    needs: [terraform-apply, build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

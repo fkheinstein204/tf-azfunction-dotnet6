@@ -72,9 +72,9 @@ jobs:
   terraform-plan:
     name: 'Terraform Plan'
     runs-on: ubuntu-latest
-    env:
+    #env:
       #this is needed since we are running terraform with read-only permissions
-      ARM_SKIP_PROVIDER_REGISTRATION: true
+      #ARM_SKIP_PROVIDER_REGISTRATION: true
     outputs:
       tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
 
@@ -126,8 +126,9 @@ jobs:
 
           terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
 
+          echo $exitcode
           echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
-          
+
           if [ $exitcode -eq 1 ]; then
             echo Terraform Plan Failed!
             exit 1
@@ -226,8 +227,9 @@ jobs:
         RESOURCE_GROUP_NAME: ${{ needs.terraform-apply.outputs.resource_group_name }}
         FUNCTION_NAME: ${{ needs.terraform-apply.outputs.function_name }}
       run: |
-          az account show
+          #az account show
           #az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID --output none
           #az account set -s $ARM_SUBSCRIPTION_ID --output none
+
           az functionapp deployment source config-zip -g $RESOURCE_GROUP_NAME -n $FUNCTION_NAME --src ./deployment.zip
 

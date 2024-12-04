@@ -10,7 +10,7 @@ on:
 
 env:
   DOTNET_VERSION: '8.0.x' # The .NET SDK version to use
-  WORKING_DIRECTORY: "./src/dotnet/AzFunctionApp"
+  WORKING_DIRECTORY: "./src/dotnet/AzFunctionHttpApi"
 
 jobs:
   build:

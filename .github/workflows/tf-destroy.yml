@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TF_LOG: INFO
+  #TF_LOG: INFO
   TERRAFORM_WORKING_DIRECTORY:  "src/Infra-Tf"
   APPLICATION_NAME: "aztf-funcApp"
   ENVIRONMENT_NAME: "dev"

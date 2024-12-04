@@ -28,7 +28,7 @@ namespace AzFunctionHttpApi.Services
         {
             _logger.LogInformation("BulkRequestProcessor.DoSomething()");
             _telemetryClient.TrackEvent("Inside the BulkRequestProcessor");
-            return 10;
+            return 5;
         }
     }
 }

@@ -25,16 +25,23 @@ resource "azurerm_linux_function_app" "fn_linux_app" {
     application_insights_connection_string  = azurerm_application_insights.main.connection_string
     application_stack {
       dotnet_version = "8.0"
+      use_custom_runtime          = false
+      use_dotnet_isolated_runtime = true
     }
+
+    
     cors {
       allowed_origins     = ["https://portal.azure.com"]
       support_credentials = true
     }
   }
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = 1,
-    #"FUNCTIONS_WORKER_RUNTIME"  =  "dotnet"
+    EnvironmentName = "Terraform-Dev"
+		SCM_DO_BUILD_DURING_DEPLOYMENT = "0"
+		WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED = "1"
   }
+
+
 
   identity {
     type         = "SystemAssigned, UserAssigned"

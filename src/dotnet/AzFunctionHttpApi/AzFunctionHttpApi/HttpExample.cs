@@ -36,11 +36,11 @@ namespace AzFunctionHttpApi
             _logger.LogInformation($"Here's my number: {myNumber}");
 
 
-            //var eventAttributes = new Dictionary<string, string>();
-            //eventAttributes.Add("Fun02", "39");
-            //eventAttributes.Add("Fun04", "40");
-            //_telemetryClient.TrackEvent("Azure Function Event", eventAttributes);
-            _telemetryClient.TrackEvent("Beta Menu Shown");
+            var eventAttributes = new Dictionary<string, string>();
+            eventAttributes.Add("Fun02", "39");
+            eventAttributes.Add("Fun04", "40");
+            _telemetryClient.TrackEvent("Azure Function Event", eventAttributes);
+            
 
             return new OkObjectResult("Welcome to Azure Functions!");
         }
@@ -58,12 +58,11 @@ namespace AzFunctionHttpApi
             _logger.LogInformation($"Here's my number: {myNumber}");
 
 
-            //var eventAttributes = new Dictionary<string, string>();
-            //eventAttributes.Add("Task02", "44");
-            // eventAttributes.Add("Task03", "60");
-            //_telemetryClient.TrackEvent("Azure Function Event", eventAttributes);
-            _telemetryClient.TrackEvent("Beta Page Loaded");
-
+            var eventAttributes = new Dictionary<string, string>();
+            eventAttributes.Add("Task02", "44");
+             eventAttributes.Add("Task03", "60");
+            _telemetryClient.TrackEvent("Azure Function Event", eventAttributes);
+            
             string name = req.Query["name"];
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();

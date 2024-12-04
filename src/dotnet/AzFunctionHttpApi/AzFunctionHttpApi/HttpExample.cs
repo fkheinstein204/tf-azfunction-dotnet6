@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using AzFunctionHttpApi.Services.Interfaces;
 using Microsoft.Azure.WebJobs;
 using Newtonsoft.Json;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights;
 
 namespace AzFunctionHttpApi
 {
@@ -14,11 +16,14 @@ namespace AzFunctionHttpApi
     {
         private readonly ILogger<HttpExample> _logger;
         private readonly IBulkRequestProcessor _bulkRequestProcessor;
+        private readonly TelemetryClient _telemetryClient;
 
-        public HttpExample(ILogger<HttpExample> logger, IBulkRequestProcessor bulkRequestProcessor)
+        //
+        public HttpExample(ILogger<HttpExample> logger, TelemetryConfiguration telemetryConfiguration, IBulkRequestProcessor bulkRequestProcessor)
         {
             _logger = logger;
             _bulkRequestProcessor = bulkRequestProcessor;
+            _telemetryClient = new TelemetryClient(telemetryConfiguration);
         }
                 
         
@@ -29,6 +34,13 @@ namespace AzFunctionHttpApi
 
             var myNumber = _bulkRequestProcessor.DoSomething();
             _logger.LogInformation($"Here's my number: {myNumber}");
+
+
+            //var eventAttributes = new Dictionary<string, string>();
+            //eventAttributes.Add("Fun02", "39");
+            //eventAttributes.Add("Fun04", "40");
+            //_telemetryClient.TrackEvent("Azure Function Event", eventAttributes);
+            _telemetryClient.TrackEvent("Beta Menu Shown");
 
             return new OkObjectResult("Welcome to Azure Functions!");
         }
@@ -45,6 +57,12 @@ namespace AzFunctionHttpApi
 
             _logger.LogInformation($"Here's my number: {myNumber}");
 
+
+            //var eventAttributes = new Dictionary<string, string>();
+            //eventAttributes.Add("Task02", "44");
+            // eventAttributes.Add("Task03", "60");
+            //_telemetryClient.TrackEvent("Azure Function Event", eventAttributes);
+            _telemetryClient.TrackEvent("Beta Page Loaded");
 
             string name = req.Query["name"];
 

@@ -42,5 +42,4 @@ src/terraform/.terraform.lock.hcl
 **/obj/**
 **/bin/**
 **/.DS_Store
-src/AzFnApplication/**
 **.vscode/**

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzFunctionApp", "AzFunctionApp\AzFunctionApp.csproj", "{BDBD0045-5C70-4533-9F4D-C0D6CF279EDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzFunctionApp", "AzFunctionApp\AzFunctionApp.csproj", "{BDBD0045-5C70-4533-9F4D-C0D6CF279EDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzFunctionApp.UnitTest", "AzFunctionApp.Test\AzFunctionApp.UnitTest.csproj", "{B2298190-D071-4192-A206-C163C16A921D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzFunctionApp.UnitTest", "AzFunctionApp.UnitTest\AzFunctionApp.UnitTest.csproj", "{C7BAC6B0-5169-4A9B-848D-A71499CEC4CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{BDBD0045-5C70-4533-9F4D-C0D6CF279EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDBD0045-5C70-4533-9F4D-C0D6CF279EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDBD0045-5C70-4533-9F4D-C0D6CF279EDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2298190-D071-4192-A206-C163C16A921D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2298190-D071-4192-A206-C163C16A921D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2298190-D071-4192-A206-C163C16A921D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2298190-D071-4192-A206-C163C16A921D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7BAC6B0-5169-4A9B-848D-A71499CEC4CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7BAC6B0-5169-4A9B-848D-A71499CEC4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7BAC6B0-5169-4A9B-848D-A71499CEC4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7BAC6B0-5169-4A9B-848D-A71499CEC4CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
 
 env:
-  DOTNET_VERSION: '8.0.x' #'6.0.401' # The .NET SDK version to use
-  WORKING_DIRECTORY: "./src/dotnet/AzFnApplication"
+  DOTNET_VERSION: '8.0.x' # The .NET SDK version to use
+  WORKING_DIRECTORY: "./src/dotnet/AzFunctionApp"
 
 jobs:
   build:

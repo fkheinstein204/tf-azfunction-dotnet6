@@ -54,7 +54,7 @@ jobs:
         working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
 
       - name: Publish
-        run: dotnet publish **/AzFnApplication.csproj --configuration Release --output ./publish --no-restore
+        run: dotnet publish **/AzFunctionApp.csproj --configuration Release --output ./publish --no-restore
         working-directory: ${{ env.DOTNET_WORKING_DIRECTORY }}
 
       - name: Generate Deployment Package

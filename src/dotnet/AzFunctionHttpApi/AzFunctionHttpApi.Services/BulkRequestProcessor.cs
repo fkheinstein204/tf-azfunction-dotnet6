@@ -10,7 +10,7 @@ namespace AzFunctionHttpApi.Services
         }
         public int DoSomething()
         {
-            return 5;
+            return 10;
         }
     }
 }
